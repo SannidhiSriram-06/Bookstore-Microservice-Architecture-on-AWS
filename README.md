@@ -1,20 +1,41 @@
 # 📚 Bookstore Microservice on AWS (Serverless)
 
-A cloud architecture case study demonstrating how a traditional Node.js Express API
-maps to AWS serverless services using Lambda, API Gateway, and MongoDB Atlas.
+A cloud architecture case study demonstrating how a traditional Node.js Express REST API can be translated into a serverless AWS deployment using Lambda, API Gateway, and MongoDB Atlas.
 
-## 📖 Documentation
+## 🎯 Objective
 
-Detailed documentation is available in the `/docs` folder:
+To understand how application components (compute, routing, storage, monitoring) map to managed cloud services.
 
-1. [Project Overview](docs/01-project-overview.md)
-2. [Architecture](docs/02-architecture.md)
-3. [Tech Stack](docs/03-tech-stack.md)
-4. [API Specification](docs/04-api-spec.md)
-5. [Deployment Steps](docs/05-deployment-steps.md)
-6. [Cost Analysis](docs/06-cost-analysis.md)
-7. [Key Learnings](docs/07-learnings.md)
-8. [Limitations & Future Work](docs/08-limitations-future.md)
-9. [Interview Talking Points](docs/09-interview-talking-points.md)
+## 🏗️ Architecture Overview
 
-> ⚠️ AWS resources were deleted after testing. Screenshots show working proof.
+Client → API Gateway → Lambda → MongoDB Atlas → CloudWatch
+
+## 🛠️ Stack
+
+- AWS Lambda (Node.js 20.x)
+- API Gateway (REST)
+- MongoDB Atlas (M0 free tier)
+- CloudWatch Logs
+- Region: us-east-1
+
+## 📡 API
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | /books | List books |
+| POST | /books | Add book |
+
+## 💰 Cost
+
+Runs fully in AWS & MongoDB free tiers → **$0/month for low traffic**
+
+## 📂 Documentation
+
+- [Architecture Decisions](./ARCHITECTURE.md)
+- [Deployment Steps](./DEPLOYMENT.md)
+- [Key Learnings & Interview Points](./LEARNINGS.md)
+
+---
+
+**Author**: Sannidhi Sriram  
+CSE (Cloud Minor) | Azure & Oracle Cloud Certified
