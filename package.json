@@ -1,0 +1,25 @@
+{
+  "name": "bookstore-api",
+  "version": "1.0.0",
+  "description": "Bookstore API - AWS Lambda Function",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "serverless",
+    "bookstore",
+    "rest-api"
+  ],
+  "author": "Sannidhi Sriram",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20.x"
+  }
+}
