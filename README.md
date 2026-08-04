@@ -107,17 +107,13 @@ curl -X POST https://gkpr0sgbr9.execute-api.us-east-1.amazonaws.com/prod/books \
 
 ## 📸 Implementation Screenshots
 
-All deployment steps are documented in the `/screenshots` folder:
+Deployment steps are documented in the `/screenshots` folder (and duplicated at repo root):
 
-1. MongoDB Atlas cluster configuration
-2. Database user setup
-3. Network access whitelist
-4. Lambda function creation and code
-5. Environment variable configuration
-6. API Gateway resource structure
-7. Method integration with Lambda
-8. Deployed API stage with invoke URL
-9. Successful API testing
+* `MongoDB.png`, `MongoDB Users.png` — Atlas cluster and database user configuration
+* `ENV.png` — Lambda environment variable configuration
+* `Lambda.png`, `Lambda Deploy.png`, `Lambda Test .png` — function creation, deployment, and test invocation
+* `API Gateway.png`, `API Gateway1.png`, `API Gateway2.png`, `API Gateway3.png` — resource structure, method integration, and deployed stage
+* `Terminal.png` — curl testing against the deployed endpoint
 
 ## 🎓 Key Learnings
 
@@ -146,31 +142,31 @@ All deployment steps are documented in the `/screenshots` folder:
 ## 🔧 Project Structure
 
 ```
-bookstore-aws-microservice/
+Bookstore-Microservice-Architecture-on-AWS/
 ├── README.md                 # This file
 ├── ARCHITECTURE.md           # Detailed architecture documentation
-├── lambda-code/
-│   ├── index.mjs            # Lambda function handler
-│   └── package.json         # Node.js dependencies
-└── screenshots/             # Deployment screenshots
-    ├── 01-mongodb-cluster.png
-    ├── 02-database-users.png
-    ├── 03-network-access.png
-    ├── 04-lambda-overview.png
-    ├── 05-lambda-code.png
-    ├── 06-env-variables.png
-    ├── 07-lambda-test.png
-    ├── 08-api-gateway-resources.png
-    ├── 09-get-method-integration.png
-    ├── 10-api-stages.png
-    └── 11-post-method-integration.png
+├── DEPLOYMENT.md             # Condensed deployment steps
+├── index.mjs                 # Lambda function handler (Node.js 20.x, ESM)
+├── package.json              # Node.js dependencies (mongodb driver)
+└── screenshots/               # Deployment screenshots (also duplicated at repo root)
+    ├── MongoDB.png
+    ├── MongoDB Users.png
+    ├── ENV.png
+    ├── Lambda.png
+    ├── Lambda Deploy.png
+    ├── Lambda Test .png
+    ├── API Gateway.png / 1 / 2 / 3
+    └── Terminal.png
 ```
+
+> Note: `index.mjs` currently uses in-memory demo data (an array reset on each cold start) rather than the MongoDB Atlas connection described above — see [Limitations](#️-limitations--future-enhancements).
 
 ## ⚠️ Limitations & Future Enhancements
 
 **Current State**: Proof-of-concept demonstrating cloud architecture mapping
 
 **Not Implemented** (but would be needed for production):
+- The committed `index.mjs` handler uses an in-memory array for demo data, not the MongoDB Atlas connection described in the architecture — the `mongodb` driver is a listed dependency (`package.json`) but isn't wired up in this version of the code
 - Authentication/Authorization (AWS Cognito or API keys)
 - Input validation and error handling
 - Database connection pooling optimization
