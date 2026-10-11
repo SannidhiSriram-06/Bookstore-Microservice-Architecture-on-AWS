@@ -1,6 +1,6 @@
 # 📚 Bookstore Microservice Architecture on AWS
 
-A cloud architecture case study demonstrating the translation of a traditional Node.js Express application into a serverless AWS deployment using Lambda, API Gateway, and MongoDB Atlas.
+A cloud architecture case study mapping the components of a basic Node.js bookstore REST API to serverless AWS services: Lambda for compute, API Gateway for routing and CloudWatch for logs. MongoDB Atlas was set up as the intended database, but the committed handler does not use it yet (see [Limitations](#️-limitations--future-enhancements)).
 
 ## 🎯 Project Overview
 
@@ -16,7 +16,7 @@ This project demonstrates practical cloud service mapping by taking a basic book
 |----------------------|-------------|---------|
 | Express Server (compute) | AWS Lambda | Serverless, auto-scaling, pay-per-request |
 | HTTP Routing | API Gateway | Managed REST API with HTTPS, routing, monitoring |
-| Database | MongoDB Atlas | Free tier managed database, no infrastructure |
+| Database | MongoDB Atlas (planned; not connected in the committed handler) | Free tier managed database, no infrastructure |
 | Static Assets | Amazon S3 | Durable object storage (not implemented in this demo) |
 | Logging | CloudWatch | Automatic Lambda log collection |
 
@@ -31,31 +31,29 @@ API Gateway (REST API)
          ↓
     AWS Lambda
     (Node.js 20.x)
-         ↓
-MongoDB Atlas
-(M0 Free Tier)
-         ↓
-    CloudWatch Logs
+      ├── in-memory books array   ← what the committed handler uses today
+      ├── CloudWatch Logs         ← Lambda logs
+      └── MongoDB Atlas (M0)      ← planned, not wired in
 ```
 
 ## 🛠️ Tech Stack
 
 - **Compute**: AWS Lambda (Node.js 20.x)
-- **API Management**: AWS API Gateway (REST API)
-- **Database**: MongoDB Atlas (M0 Free Tier - 512MB)
+- **API Management**: AWS API Gateway (REST API, `prod` stage)
+- **Database**: In-memory array inside the handler (data resets on cold start). A MongoDB Atlas M0 cluster (512MB) was created for the intended design but is not connected.
 - **Monitoring**: AWS CloudWatch
 - **Region**: us-east-1
 
 ## 📡 API Endpoints
 
-The deployed API supports basic CRUD operations:
+The API exposes two operations (list and add):
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/books` | List all books |
 | POST | `/books` | Add a new book |
 
-**Note**: This is a proof-of-concept. A production system would include UPDATE, DELETE, authentication, and input validation.
+**Note**: This is a proof-of-concept. Books added with `POST` are not persisted between invocations. A production system would include a real database connection, UPDATE, DELETE, authentication, and input validation.
 
 ## 💰 Cost Analysis
 
@@ -65,7 +63,7 @@ The deployed API supports basic CRUD operations:
 
 - **Lambda**: Free tier covers 1M requests/month → $0
 - **API Gateway**: Free tier covers 1M API calls/month → $0
-- **MongoDB Atlas**: M0 tier is permanently free → $0
+- **MongoDB Atlas**: M0 tier is free → $0 (cluster created, not connected to the handler)
 - **CloudWatch**: 5GB logs free tier → $0
 
 **Total: $0/month** for development and low-traffic scenarios.
@@ -128,11 +126,12 @@ Deployment steps are documented in the `/screenshots` folder (and duplicated at 
 - Integrated with CloudWatch for monitoring
 - Rate limiting and throttling capabilities
 
-### MongoDB Atlas Integration
+### MongoDB Atlas (set up, not yet wired in)
 - Managed database service eliminates server maintenance
 - Connection string-based access
 - IP whitelisting for security
 - Free tier suitable for learning/development
+- Next step: import the `mongodb` driver in `index.mjs` and read `MONGO_URI` instead of using the in-memory array
 
 ### Lambda Proxy Integration
 - API Gateway passes entire request to Lambda
